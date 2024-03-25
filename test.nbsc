@@ -1,0 +1,31 @@
+# nbsc comment
+
+FUN oopify(prefix) -> prefix + "oop" # function oopify with args of prefix, returns prefix + "oop"
+
+FUN join(elements, separator) # function join with args elements and seperator
+	VAR result = ""  #variable
+	VAR len = LEN(elements)
+
+	FOR i = 0 TO len THEN # for loop named i which has base value of 0 to var len on line 7
+		VAR result = result + elements/i
+		IF i != len - 1 THEN VAR result = result + separator # if i isn't equal to var len -1 then var result = result + separator
+	END # end of for loop
+
+	RETURN result # returns var result out of the function
+END # end of function
+
+FUN map(elements, func) # function map with args of elements and func
+	VAR new_elements = []
+
+	FOR i = 0 TO LEN(elements) THEN # for loop of i with base value of 0 to lenght of arg elements
+		APPEND(new_elements, func(elements/i)) # adds a str to the list new_elements of arg func with args element/i. this accualy wants the user to put there a function
+	END # end of for loop
+
+	RETURN new_elements # return out of the function with new_elemnts list
+END # end of function
+
+PRINT("Greetings universe!") # prints out the string inside
+
+FOR i = 0 TO 5 THEN # for loop of i with value of 0 to 5
+	PRINT(join(map(["l", "sp"], oopify), ", ")) # prints out: founction join
+END # end of for loop
