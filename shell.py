@@ -13,7 +13,6 @@ def restart(runs):
 def main():
       global process, restarted, shell_ver, dir
       reputation = 0
-      errors = True
       py_errors = False
       fn = f'shell.py'
       os.system('cls')
@@ -23,16 +22,38 @@ def main():
 
       try: 
             while True:
-                  text = input(f'BSC {dir}>')
+                  text = input(f'n-BSC {dir}>')
                   if text == "--shell-end": break
+                  elif text.strip() == "": continue
                   elif text == "--shell-clear": os.system('cls')
                   elif text == "--shell-restart":  process += 1; restart(process)
                   elif text == "--shell-ver": print(f'not-BASIC {shell_ver}')
-                  elif text == "--shell-no-errs": errors = False; print("Errors are OFF")
-                  elif text == "--shell-errs": errors = True; print("Errors enabled")
                   elif text == "--shell-repo": print(reputation)
                   elif text == "--shell-py-errs": py_errors = True; print("Python syntax errors enabled.")
                   elif text == "--shell-py-no-errs": py_errors = False; print("Python syntax errors disabled.")
+                  elif text.startswith("--shell-rmdir-"):
+                        try:
+                              os.rmdir(text[14:].strip())
+                        except Exception as e:
+                              print(e)
+                  elif text.startswith("--shell-rmfile-"):
+                        filename = text[15:].strip()
+                        try:
+                              os.remove(filename)
+                        except Exception as a:
+                              print(a)
+                  elif text.startswith("--shell-mkdir-"):
+                        directory = text[14:]
+                        try:
+                              os.makedirs(directory)
+                        except Exception as e:
+                              print(e)
+                  elif text.startswith("--shell-mkfile-"):
+                        filename = text[15:].strip()
+                        try:
+                              open(filename, "x")
+                        except Exception as o:
+                              print(o)
                   elif text.startswith("--shell-cd-"):
                         try:
                               if text[11:].strip() == "..":
@@ -55,19 +76,15 @@ def main():
                               except Exception as e:
                                     print(e)
                   else:
-                    result, error = basic.run(fn, text)
-                       
-                    if errors:
+                        result, error = basic.run(fn, text)
                         if error:
                               print(error.as_string())
                               if reputation > 0: reputation -= 1
-                        elif result: print(result); reputation += 1
-                  if not errors:        
-                        if result: print(result); reputation +=1
-                        elif error:
-                              print(error.as_string())
-                              if reputation > 0: reputation -= 1
-
+                        elif result:
+                              if len(result.elements) == 1:
+                                    print(repr(result.elements[0])); reputation += 1
+                              else:
+                                    print(repr(result)); reputation += 1
       except KeyboardInterrupt:
             if restarted == 0:
                   print('\n---------------------------------------------')
