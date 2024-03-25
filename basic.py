@@ -12,7 +12,7 @@ LETTERS_DIGITS = LETTERS + DIGITS
 
 # STRING WITH ARROWS
 
-def string_with_arrows(text, pos_start, pos_end):
+def str_w_arr(text, pos_start, pos_end):
     result = ''
 
     idx_start = max(text.rfind('\n', 0, pos_start.idx), 0)
@@ -46,7 +46,7 @@ class Error:
   def as_string(self):
     result  = f'{self.error_name}: {self.details}\n'
     result += f'File {self.pos_start.fn}, line {self.pos_start.ln + 1}'
-    result += '\n\n' + string_with_arrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
+    result += '\n\n' + str_w_arr(self.pos_start.ftxt, self.pos_start, self.pos_end)
     return result
 
 class IllegalCharError(Error):
@@ -69,7 +69,7 @@ class RTError(Error):
   def as_string(self):
     result  = self.generate_traceback()
     result += f'{self.error_name}: {self.details}'
-    result += '\n\n' + string_with_arrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
+    result += '\n\n' + str_w_arr(self.pos_start.ftxt, self.pos_start, self.pos_end)
     return result
 
   def generate_traceback(self):
@@ -136,6 +136,10 @@ TT_NEWLINE		= 'NEWLINE'
 TT_EOF				= 'EOF'
 
 KEYWORDS = [
+  'END',
+  'RETURN',
+  'CONTINUE',
+  'BREAK',
   'VAR',
   'AND',
   'OR',
@@ -149,10 +153,7 @@ KEYWORDS = [
   'WHILE',
   'FUN',
   'THEN',
-  'END',
-  'RETURN',
-  'CONTINUE',
-  'BREAK',
+  
 ]
 
 class Token:
